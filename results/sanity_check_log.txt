@@ -1,0 +1,43 @@
+Sanity check Top-N | 2026-10-19 | seed=42 | users=200 | K=10
+evaluable users (validation, warm): 11850
+
+               Model User bermasalah  Recall@10 kasar
+          Popularity           0/200           0.0108
+          MF (Chris)           0/200           0.0000
+TF-IDF CBF (Tiffani)           0/200           0.0000
+
+[Popularity] contoh user AHKXVSFVRVTI3DMAWLTANLZB5H4A:
+   1. B09857JRP2 | GLS Audio Instrument Cable - Amp Cord for Bass & Electric Guitar - Str
+   2. B0BCK6L7S5 | Donner Guitar Delay Pedal, Yellow Fall Analog Delay Guitar Effect Peda
+   3. B0BSGM6CQ9 | Ernie Ball Mondo Slinky Nickelwound Electric Guitar Strings 10.5-52 Ga
+   4. B0BPJ4Q6FJ | D'Addario Guitar Strings - XL Nickel Electric Guitar Strings - EXL150H
+   5. B0BTC9YJ2W | D'Addario Guitar Strings - Phosphor Bronze Acoustic Guitar Strings - E
+   6. B004XNK7AI | Snark SN-5 Tuner for Guitar, Bass and Violin (Black)
+   7. B0BHSG5C3G | Snark SN5X Clip-On Tuner for Guitar, Bass & Violin (Current Model) 1.8
+   8. B08R5GM6YB | D'Addario Pro-Winder - Guitar String Winder, Guitar String Cutter, Gui
+   9. B0C67HCGBR | GLS Audio 12ft Mic Cable Patch Cords - XLR Male to XLR Female Black Ca
+   10. B0BPLFP5P6 | D'Addario Accessories Guitar Tuner - Micro Headstock Tuner - Tuner for
+
+[MF (Chris)] contoh user AHKXVSFVRVTI3DMAWLTANLZB5H4A:
+   1. B003JCF5Y2 | GLS Audio 25ft Colored Blue Mic Cable Patch Cords - XLR Male to XLR Fe
+   2. B09LTZ1QXP | HERCULES GS414B + Acoustic Guitar Stand Plus
+   3. B074P6W2G1 | String Swing Guitar Holder Low-Profile Wide-Body for Horizontal Flat W
+   4. B000068O44 | Hosa GMD-108 5-Pin DIN to 5-Pin DIN MIDI Coupler
+   5. B00008XETI | Shure Stylus for N44-7 Cartridge, Single
+   6. B06VX78R9Z | Gibson Metal Jack Plates, Nickel
+   7. B00IPHITHG | JIM DUNLOP SLS1404G Straplok® Flush Mount Strap Retainer System, Gold
+   8. B08129P2XY | MOTU M4 4x4 USB-C Audio Interface
+   9. B0009FJ1NS | DR Strings Hi-Beam - Stainless Steel Round Core 45-105
+   10. B00FM0MSDK | Nickel Schaller Guitar Strap Locks (Genuine German Made)
+
+[TF-IDF CBF (Tiffani)] contoh user AHKXVSFVRVTI3DMAWLTANLZB5H4A:
+   1. B07KRT23NT | CAMVATE 15mm Rod Clamp With 5/8"-27 Screw Connectors For Microphone - 
+   2. B07T3Z11QJ | Professional Foam Windscreen for Blue Yeti - Covers Other Large Microp
+   3. B07YW7V3YG | Behringer BH 770 Studio Headphones
+   4. B0C6H9T5T6 | Blue Yeti USB Microphone for PC, Mac, Gaming, Recording, Streaming, Po
+   5. B09MWVM7YV | Crossrock Deluxe Fiberglass Dreadnought Guitar Case, Navy Blue (CRF202
+   6. B01LC1RPZI | khanka Hard Travel Case Replacement for Logitech for Creators Blue Yet
+   7. B01LXOJZJ9 | Mudder Mic Cover Foam Microphone Windscreen, Condenser Microphone (Siz
+   8. B071V67VHF | Peavey PV 115 2-Way Speaker
+   9. B08R5M2FGY | InnoGear Microphone Arm, Upgraded Mic Arm Microphone Stand Boom Suspen
+   10. B071LF8188 | DragonX Mushroom Party Light RGB Decorative Ambient Home Fixture Light
