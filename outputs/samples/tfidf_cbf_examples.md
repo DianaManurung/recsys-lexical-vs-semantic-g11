@@ -88,8 +88,8 @@ Validation hits: 0 of 4 relevant items.
 | rank | item_id | title | score | train interactions | mean train rating | relevant in validation |
 |---|---|---|---|---|---|---|
 | 1 | B07NBTFB4B | East top Harmonica, Blues Harmonica Key of E, 10 Holes 008K Diatonic Blues harp Mouth Organ Harmonica with Silver Cover, Standard Harmonicas For Adults, Professionals and Students | 0.1168 | 8 | 4.62 |  |
-| 2 | B01FJSEX3M | East top Diatonic Harmonica Key of C 10 Holes 20 Tones 008K Blues Harp Mouth Organ Harmonica with Black Cover, Top Grade Harmonica for Adults, Professionals and Students | 0.1164 | 3 | 4.67 |  |
-| 3 | B07SB4413B | East top Diatonic Harmonica Key of D 10 Holes 20 Tones 008K Blues Harp Mouth Organ Harmonica with Black Cover, Top Grade Harmonica for Adults, Professionals and Students | 0.1164 | 19 | 4.68 |  |
+| 2 | B07SB4413B | East top Diatonic Harmonica Key of D 10 Holes 20 Tones 008K Blues Harp Mouth Organ Harmonica with Black Cover, Top Grade Harmonica for Adults, Professionals and Students | 0.1164 | 19 | 4.68 |  |
+| 3 | B01FJSEX3M | East top Diatonic Harmonica Key of C 10 Holes 20 Tones 008K Blues Harp Mouth Organ Harmonica with Black Cover, Top Grade Harmonica for Adults, Professionals and Students | 0.1164 | 3 | 4.67 |  |
 | 4 | B08GS9C74W | East top Harmonica Set of 7, 10 Holes Blues Harp Mouth Organ Diatonic Blues Harmonica Set For Adults, Professionals and Students, as a Gift | 0.1152 | 3 | 4.00 |  |
 | 5 | B07N8V6K46 | East top Diatonic Harmonica Key of Eb, 10 Holes 20 Tones 008K Diatonic Blues Harp Mouth Organ Harmonica with Blue Case, Standard Harmonica For Adults, Professionals and Students | 0.1150 | 26 | 4.50 |  |
 | 6 | B07NQ8X3FV | East top Diatonic Blues Harmonica key of Paddy C, 10 Holes 20 Tones 008K Blues Harp Diatonic Mouth Organ Harmonica, Standard Harmonica for Adults, Professionals and Students | 0.1124 | 18 | 4.44 |  |

@@ -18,6 +18,7 @@ class MatrixFactorizationRecommender:
         regularization=0.02,
         min_rating=4,
         random_state=42,
+        item_bias_weight=0.0,
     ):
         if n_factors < 1 or n_epochs < 1:
             raise ValueError("n_factors and n_epochs must be positive")
@@ -27,6 +28,9 @@ class MatrixFactorizationRecommender:
         self.regularization = regularization
         self.min_rating = min_rating
         self.random_state = random_state
+        if item_bias_weight < 0:
+            raise ValueError("item_bias_weight must be non-negative")
+        self.item_bias_weight = item_bias_weight
         self.user_index = {}
         self.item_index = {}
         self.user_factors = None
@@ -114,9 +118,12 @@ class MatrixFactorizationRecommender:
         item_ids = np.fromiter(
             (self.item_index[item] for item in candidates), dtype=np.int32
         )
+        # Item bias captures how often/popularly an item is rated and can
+        # overwhelm the much smaller user-item interaction term on sparse data.
+        # Keep it configurable; validation on this dataset found that removing
+        # it improves both Recall@10 and catalog coverage substantially.
         scores = (
-            self.global_mean + self.user_bias[u]
-            + self.item_bias[item_ids]
+            self.item_bias_weight * self.item_bias[item_ids]
             + self.item_factors[item_ids] @ self.user_factors[u]
         )
         order = np.argsort(-scores, kind="stable")[:k]
