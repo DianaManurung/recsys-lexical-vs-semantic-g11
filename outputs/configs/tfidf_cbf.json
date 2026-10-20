@@ -1,0 +1,63 @@
+{
+  "run_id": "tfidf_cbf_20261020-110106",
+  "run_started": "2026-10-20T11:01:06",
+  "model": "TfidfContentRecommender",
+  "text_source": {
+    "path": "data/items.csv",
+    "column": "content_text_basic",
+    "filter": "item_id in data/candidate_items_warm.csv",
+    "n_items_with_text": 22753
+  },
+  "params": {
+    "stop_words": "english",
+    "min_df": 2,
+    "max_df": 0.8,
+    "sublinear_tf": true,
+    "min_rating": 4,
+    "k": 10
+  },
+  "vectorizer_params": {
+    "analyzer": "word",
+    "binary": false,
+    "decode_error": "strict",
+    "encoding": "utf-8",
+    "input": "content",
+    "lowercase": true,
+    "max_df": 0.8,
+    "max_features": null,
+    "min_df": 2,
+    "ngram_range": [
+      1,
+      1
+    ],
+    "norm": "l2",
+    "preprocessor": null,
+    "smooth_idf": true,
+    "stop_words": "english",
+    "strip_accents": null,
+    "sublinear_tf": true,
+    "token_pattern": "(?u)\\b\\w\\w+\\b",
+    "tokenizer": null,
+    "use_idf": true,
+    "vocabulary": null
+  },
+  "user_profile": "mean TF-IDF vector of items rated >= min_rating in data/interactions_train.csv",
+  "scoring": "cosine similarity (L2-normalized item vectors); train-seen items excluded; top-k",
+  "fallback": "popularity (train rating >= min_rating) for users without a profile and for zero-score slots",
+  "seed": 42,
+  "seed_note": "The TF-IDF model is deterministic; the seed is only used to pick the 3 sample users in samples/.",
+  "data": {
+    "train": "data/interactions_train.csv",
+    "validation": "data/interactions_validation.csv",
+    "candidates": "data/candidate_items_warm.csv",
+    "items": "data/items.csv"
+  },
+  "environment": {
+    "python": "3.11.4",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "numpy": "2.4.2",
+    "pandas": "3.0.0",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.1"
+  }
+}
