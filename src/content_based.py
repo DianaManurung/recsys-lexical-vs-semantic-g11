@@ -1,22 +1,19 @@
-"""TF-IDF content-based filtering built from train interactions.
+"""TF-IDF content-based filtering over item text (``data/items.csv``)."""
 
-The provided dataset has no item text, so each item's "document" is the list
-of users who interacted with it in train (user IDs act as terms). IDF
-down-weights users who interact with many items.
-"""
+from pathlib import Path
 
 import numpy as np
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+DEFAULT_ITEMS_PATH = Path(__file__).resolve().parents[1] / "data" / "items.csv"
 
-def build_item_docs(train, min_rating=None):
-    """Return ``{item_id: "user_1 user_2 ..."}`` from train interactions.
 
-    With ``min_rating`` set, only interactions with ``rating >= min_rating``
-    are used; otherwise every train interaction counts.
-    """
-    df = train if min_rating is None else train[train["rating"] >= min_rating]
-    return df.groupby("item_id")["user_id"].apply(" ".join).to_dict()
+def load_item_text(path, cand_set, text_col="content_text_basic"):
+    """Return ``{item_id: text}`` for warm candidates from ``items.csv``."""
+    items = pd.read_csv(path, dtype={"item_id": str}, usecols=["item_id", text_col])
+    items = items[items["item_id"].isin(cand_set)]
+    return dict(zip(items["item_id"], items[text_col].fillna("")))
 
 
 class TfidfContentRecommender:
@@ -29,16 +26,16 @@ class TfidfContentRecommender:
 
     def __init__(
         self,
+        stop_words="english",
         min_df=2,
-        max_df=1.0,
+        max_df=0.8,
         sublinear_tf=True,
-        doc_min_rating=None,
         min_rating=4,
     ):
+        self.stop_words = stop_words
         self.min_df = min_df
         self.max_df = max_df
         self.sublinear_tf = sublinear_tf
-        self.doc_min_rating = doc_min_rating
         self.min_rating = min_rating
         self.vectorizer = None
         self.item_index = {}
@@ -49,23 +46,26 @@ class TfidfContentRecommender:
         self.ranked_items = []
         self.candidate_items = []
 
-    def fit(self, train, cand_set):
-        """Fit TF-IDF on item documents built from ``train`` and store each
-        user's positively rated train items."""
+    def fit(self, train, cand_set, item_text=None):
+        """Fit TF-IDF on ``item_text`` (``{item_id: text}``, read from
+        ``data/items.csv`` when omitted) and store each user's positively
+        rated train items."""
         if train.empty:
             raise ValueError("train must contain at least one interaction")
+        if item_text is None:
+            item_text = load_item_text(DEFAULT_ITEMS_PATH, cand_set)
+        if not item_text:
+            raise ValueError("item_text must contain at least one item")
 
-        item_docs = build_item_docs(train, self.doc_min_rating)
-        items = sorted(item_docs)
+        items = sorted(item_text)
         self.vectorizer = TfidfVectorizer(
-            token_pattern=r"\S+",
-            lowercase=False,
+            stop_words=self.stop_words,
             min_df=self.min_df,
             max_df=self.max_df,
             sublinear_tf=self.sublinear_tf,
         )
         # Rows are L2-normalized, so dot products are cosine similarities.
-        matrix = self.vectorizer.fit_transform(item_docs[i] for i in items).tocsr()
+        matrix = self.vectorizer.fit_transform(item_text[i] for i in items).tocsr()
         self.item_index = {item: idx for idx, item in enumerate(items)}
 
         pos = train[train["rating"] >= self.min_rating]
@@ -83,7 +83,7 @@ class TfidfContentRecommender:
             item for item in positive_counts.index if item in cand_set
         ]
 
-        # Candidate rows; candidates absent from train get an all-zero row.
+        # Candidate rows; candidates without text get an all-zero row.
         self.candidate_items = sorted(cand_set)
         rows = np.array(
             [self.item_index.get(item, -1) for item in self.candidate_items]
