@@ -1,0 +1,38 @@
+{
+  "run_id": "semantic_cbf_20261031-110440",
+  "saved_at": "2026-10-31T11:04:40",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "n_recommendation_rows": 118500,
+  "users_without_profile": 191,
+  "full_evaluation_rule_violations": {
+    "wrong_length": 0,
+    "duplicate_items": 0,
+    "seen_items": 0,
+    "non_candidate_items": 0
+  },
+  "sanity_check_rule_violations": {
+    "wrong_length": 0,
+    "duplicate_items": 0,
+    "seen_items": 0,
+    "non_candidate_items": 0
+  },
+  "embedding_truncation": {
+    "truncated_texts": 8276,
+    "truncated_tokens": 1772380
+  },
+  "checks": {
+    "embedding_shape_valid": true,
+    "embedding_ids_valid": true,
+    "l2_normalization_valid": true,
+    "full_evaluation_rules_passed": true,
+    "sanity_check_passed": true
+  },
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "torch": "2.15.0+cpu",
+    "sentence_transformers": "6.2.0"
+  }
+}

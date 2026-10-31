@@ -1,0 +1,42 @@
+{
+  "run_id": "semantic_cbf_20261031-110440",
+  "model": "SemanticEmbeddingRecommender",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "data": {
+    "train": "data/interactions_train.csv",
+    "validation": "data/interactions_validation.csv",
+    "candidates": "data/candidate_items_warm.csv",
+    "items": "data/items.csv",
+    "text_column": "content_text_basic"
+  },
+  "embedding": {
+    "dimension": 384,
+    "max_seq_length": 256,
+    "batch_size": 32,
+    "device": "cpu",
+    "n_items": 22753,
+    "truncated_texts": 8276,
+    "truncated_tokens": 1772380,
+    "files": [
+      "outputs/embeddings/item_embeddings.npy",
+      "outputs/embeddings/item_ids.npy"
+    ]
+  },
+  "recommender": {
+    "min_rating": 4,
+    "k": 10,
+    "user_profile": "Mean of positive train item embeddings, followed by L2 normalization.",
+    "scoring": "Cosine similarity using normalized item embeddings and normalized user profiles.",
+    "seen_items_excluded": true,
+    "fallback": "Train popularity for users without a profile and remaining non-positive score slots."
+  },
+  "evaluation": {
+    "n_eval_users": 11850,
+    "relevance_rule": "Validation rating >= 4, warm candidates, excluding train-seen items.",
+    "metrics": [
+      "Recall@10",
+      "NDCG@10",
+      "HitRate@10"
+    ]
+  }
+}
