@@ -222,3 +222,6 @@ data/
 
 # Generated top-10 recommendation files (large, reproducible from notebooks)
 outputs/recs/
+
+# Generated semantic embedding files
+outputs/embeddings/
