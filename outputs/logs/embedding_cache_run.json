@@ -1,0 +1,28 @@
+{
+  "created_at": "2026-11-07T10:38:58",
+  "generated_by": "src/semantic_embedding.py (same steps as main())",
+  "cache_dir": "outputs/embeddings",
+  "encode_seconds": 541.4,
+  "from_cache": false,
+  "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+  "batch_size": 32,
+  "embedding_dimension": 384,
+  "max_seq_length": 256,
+  "truncated_texts": 8276,
+  "truncated_tokens": 1772380,
+  "shape": [
+    22753,
+    384
+  ],
+  "device": {
+    "encoder_device": "cpu",
+    "cpu": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+    "cuda_gpu_available": null
+  },
+  "environment": {
+    "python": "3.11.4",
+    "numpy": "1.24.3",
+    "torch": "2.15.0+cpu",
+    "sentence_transformers": "6.2.0"
+  }
+}

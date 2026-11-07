@@ -54,7 +54,7 @@ def ensure_item_embeddings():
         from datetime import datetime
 
         log = {"created_at": datetime.now().isoformat(timespec="seconds"),
-               "generated_by": "src/semantic_embedding.py main()",
+               "generated_by": "src/semantic_embedding.py (same steps as main())",
                **info, "environment": _versions()}
         LOG_PATH.write_text(json.dumps(log, indent=2), encoding="utf-8")
     return info
