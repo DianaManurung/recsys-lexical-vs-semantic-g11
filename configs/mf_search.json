@@ -1,0 +1,31 @@
+{
+  "model": "matrix_factorization",
+  "search": "grid",
+  "selection_metric": "NDCG@10 (validation)",
+  "seed": 42,
+  "fixed": {
+    "min_rating": 4,
+    "item_bias_weight": 0.0,
+    "k": 10
+  },
+  "grid": {
+    "n_factors": [32, 64],
+    "regularization": [0.02, 0.05],
+    "learning_rate": [0.005, 0.01],
+    "n_epochs": [10, 20]
+  },
+  "n_combinations": 16,
+  "baseline": {
+    "n_factors": 32,
+    "regularization": 0.02,
+    "learning_rate": 0.01,
+    "n_epochs": 10,
+    "item_bias_weight": 0.0,
+    "random_state": 42,
+    "source": "notebooks/collaborative_mf_demo.ipynb"
+  },
+  "notes": [
+    "All combinations use the shared warm-start protocol and validation only.",
+    "item_bias_weight is fixed at the existing baseline value; tuning it is outside this grid."
+  ]
+}

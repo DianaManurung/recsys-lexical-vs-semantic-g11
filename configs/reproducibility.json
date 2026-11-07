@@ -1,0 +1,24 @@
+{
+  "seed": 42,
+  "evaluation_protocol": "src.protocol.build_protocol + src.evaluate.evaluate_model",
+  "validation_only_for_selection": true,
+  "test_usage": "reserved for one final evaluation in W13",
+  "relevant_item_rule": "validation rating >= 4, item in warm candidate set, user present in train",
+  "candidate_rule": "same warm candidate set for every model; exclude user items seen in train",
+  "top_k": 10,
+  "primary_metrics": ["Recall@10", "NDCG@10"],
+  "secondary_metric": "HitRate@10",
+  "run_id_format": "<model>_<UTC YYYYMMDD-HHMMSS>_<combination index>_s<seed>",
+  "log_file": "outputs/logs/experiment_log.csv",
+  "logged_fields": [
+    "full parameter set",
+    "search config path and combination index",
+    "git commit and dirty-worktree flag",
+    "UTC timestamp",
+    "seed",
+    "SHA-256 fingerprint of train, validation, warm-candidate, and item-metadata CSV inputs",
+    "Python/platform and NumPy, pandas, SciPy, scikit-learn, Sentence Transformers, and PyTorch versions",
+    "validation metrics, evaluable user count, and elapsed seconds"
+  ],
+  "selection_rule": "choose the highest validation NDCG@10; report Recall@10 alongside it; break exact ties by higher Recall@10, then lower combination index"
+}

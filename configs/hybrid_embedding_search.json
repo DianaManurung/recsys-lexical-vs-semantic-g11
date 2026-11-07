@@ -1,0 +1,27 @@
+{
+  "model": "hybrid_embedding",
+  "search": "grid",
+  "selection_metric": "NDCG@10 (validation)",
+  "seed": 42,
+  "fixed": {
+    "min_rating": 4,
+    "k": 10,
+    "embedding_config": "configs/embedding_search.json baseline (outputs/configs/semantic_cbf.json model and cache)",
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "score_normalization": "min-max per user over unseen warm candidates (content and popularity separately)",
+    "score_definition": "alpha * semantic_embedding_score + (1 - alpha) * popularity_score",
+    "no_profile_rule": "content score is zero; popularity score remains active"
+  },
+  "grid": {
+    "alpha": [
+      0.25,
+      0.5,
+      0.75
+    ]
+  },
+  "n_combinations": 3,
+  "notes": [
+    "The cache is made with the existing semantic baseline model if missing.",
+    "alpha is the semantic-content weight; 1-alpha is the train-only positive-interaction popularity weight."
+  ]
+}

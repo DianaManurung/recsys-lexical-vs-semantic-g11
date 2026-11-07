@@ -1,0 +1,30 @@
+{
+  "model": "hybrid_tfidf",
+  "search": "grid",
+  "selection_metric": "NDCG@10 (validation)",
+  "seed": 42,
+  "fixed": {
+    "min_rating": 4,
+    "k": 10,
+    "text_field": "content_text_basic",
+    "stop_words": "english",
+    "min_df": 2,
+    "max_df": 0.8,
+    "sublinear_tf": true,
+    "score_normalization": "min-max per user over unseen warm candidates (content and popularity separately)",
+    "score_definition": "alpha * tfidf_content_score + (1 - alpha) * popularity_score",
+    "no_profile_rule": "content score is zero; popularity score remains active"
+  },
+  "grid": {
+    "alpha": [
+      0.25,
+      0.5,
+      0.75
+    ]
+  },
+  "n_combinations": 3,
+  "notes": [
+    "alpha is the content-signal weight; 1-alpha is the train-only positive-interaction popularity weight.",
+    "The search tests only intermediate blends; E1 and E3 are the pure reference baselines."
+  ]
+}
