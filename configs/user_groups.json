@@ -1,0 +1,12 @@
+{
+  "analysis": "user_activity_groups",
+  "research_question": "RQ2",
+  "source": "data/interactions_train.csv",
+  "activity_measure": "number of train interactions per user (all ratings)",
+  "groups": [
+    {"label": "rendah", "min": null, "max": 5},
+    {"label": "sedang", "min": 6, "max": 8},
+    {"label": "tinggi", "min": 9, "max": null}
+  ],
+  "note": "Separate analysis only. The groups are not used to filter users in the main evaluation."
+}
