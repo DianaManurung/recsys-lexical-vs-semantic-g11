@@ -1,0 +1,16 @@
+{
+  "model": "popularity",
+  "search": "fixed baseline",
+  "selection_metric": "reference baseline (validation)",
+  "seed": 42,
+  "fixed": {
+    "min_rating": 4,
+    "k": 10
+  },
+  "grid": {},
+  "n_combinations": 1,
+  "notes": [
+    "Popularity counts positive interactions (rating >= 4) in train only.",
+    "No hyperparameter tuning is performed; this is the shared reference baseline."
+  ]
+}
