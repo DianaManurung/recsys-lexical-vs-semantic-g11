@@ -1,0 +1,26 @@
+{
+  "model": "tfidf_cbf",
+  "search": "grid",
+  "selection_metric": "ndcg@10 (validation)",
+  "seed": 42,
+  "fixed": {
+    "text_field": "content_text_basic",
+    "stop_words": "english",
+    "sublinear_tf": true,
+    "max_df": 0.8,
+    "min_rating": 4,
+    "k": 10
+  },
+  "grid": {
+    "max_features": [10000, 20000, null],
+    "ngram_range": [[1, 1], [1, 2]],
+    "min_df": [2, 5]
+  },
+  "n_combinations": 12,
+  "baseline": {
+    "max_features": null,
+    "ngram_range": [1, 1],
+    "min_df": 2,
+    "source": "outputs/configs/tfidf_cbf.json"
+  }
+}

@@ -1,0 +1,3 @@
+run_id,timestamp,model,search_file,combo_index,params,commit,dirty,selection_metric,Recall@10,NDCG@10,HitRate@10,n_users,seconds
+tfidf_cbf_20261107-103228_08,2026-11-07T10:32:28,tfidf_cbf,configs/tfidf_search.json,8,"{""max_features"": null, ""min_df"": 2, ""ngram_range"": [1, 1]}",4972b9d,False,ndcg@10 (validation),0.012722345528611938,0.007451681070760173,0.021772151898734177,11850,66.9
+tfidf_cbf_20261107-103327_00,2026-11-07T10:33:27,tfidf_cbf,configs/tfidf_search.json,0,"{""max_features"": 10000, ""min_df"": 2, ""ngram_range"": [1, 1]}",4972b9d,False,ndcg@10 (validation),0.012937898611253629,0.007598949067555292,0.02219409282700422,11850,58.9
