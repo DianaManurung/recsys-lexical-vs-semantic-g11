@@ -31,12 +31,18 @@ class TfidfContentRecommender:
         max_df=0.8,
         sublinear_tf=True,
         min_rating=4,
+        max_features=None,
+        ngram_range=(1, 1),
     ):
+        # max_features and ngram_range default to the TfidfVectorizer
+        # defaults, so the baseline run is unchanged.
         self.stop_words = stop_words
         self.min_df = min_df
         self.max_df = max_df
         self.sublinear_tf = sublinear_tf
         self.min_rating = min_rating
+        self.max_features = max_features
+        self.ngram_range = tuple(ngram_range)
         self.vectorizer = None
         self.item_index = {}
         self.item_matrix = None
@@ -63,6 +69,8 @@ class TfidfContentRecommender:
             min_df=self.min_df,
             max_df=self.max_df,
             sublinear_tf=self.sublinear_tf,
+            max_features=self.max_features,
+            ngram_range=self.ngram_range,
         )
         # Rows are L2-normalized, so dot products are cosine similarities.
         matrix = self.vectorizer.fit_transform(item_text[i] for i in items).tocsr()

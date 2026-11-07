@@ -1,0 +1,27 @@
+{
+  "model": "embedding_cbf",
+  "search": "grid",
+  "selection_metric": "ndcg@10 (validation)",
+  "seed": 42,
+  "fixed": {
+    "text_field": "content_text_basic",
+    "normalize": true,
+    "batch_size": 32,
+    "device": "cpu",
+    "min_rating": 4,
+    "k": 10
+  },
+  "grid": {
+    "model_name": [
+      "sentence-transformers/all-MiniLM-L6-v2",
+      "sentence-transformers/all-mpnet-base-v2"
+    ],
+    "max_seq_length": [256]
+  },
+  "n_combinations": 2,
+  "baseline": {
+    "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+    "max_seq_length": 256,
+    "source": "outputs/configs/semantic_cbf.json"
+  }
+}
