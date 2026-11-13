@@ -1,0 +1,74 @@
+{
+  "run_time": "2026-11-13T19:56:14",
+  "seed": 42,
+  "k": 10,
+  "split": "validation",
+  "n_evaluable_users": 11659,
+  "protocol": {
+    "train_interactions": 427957,
+    "validation_interactions": 41284,
+    "train_users": 54483,
+    "train_items": 22753,
+    "candidate_items_warm": 22753,
+    "candidates_not_seen_in_train": 0,
+    "evaluable_users": 11659,
+    "relevant_pairs": 24202,
+    "min_rating_relevant": 4,
+    "top_k": 10
+  },
+  "params": {
+    "MF": {
+      "n_factors": 32,
+      "n_epochs": 10,
+      "learning_rate": 0.01,
+      "regularization": 0.02,
+      "min_rating": 4,
+      "random_state": 42,
+      "item_bias_weight": 0.0
+    },
+    "TF-IDF": {
+      "stop_words": "english",
+      "min_df": 2,
+      "max_df": 0.8,
+      "sublinear_tf": true,
+      "min_rating": 4
+    },
+    "Embedding": {
+      "min_rating": 4
+    }
+  },
+  "run_models": [
+    "Popularity",
+    "MF",
+    "TF-IDF",
+    "Embedding"
+  ],
+  "run_info": {
+    "Popularity": {
+      "status": "ok",
+      "fit_seconds": 0.7,
+      "total_seconds": 0.9
+    },
+    "MF": {
+      "status": "ok",
+      "fit_seconds": 182.7,
+      "total_seconds": 555.8
+    },
+    "TF-IDF": {
+      "status": "ok",
+      "fit_seconds": 23.6,
+      "total_seconds": 70.4
+    },
+    "Embedding": {
+      "status": "skipped",
+      "reason": "[Errno 2] No such file or directory: 'D:\\\\Kuliah\\\\Semester 7\\\\SISREK\\\\Proyek\\\\recsys-lexical-vs-semantic-g11\\\\outputs\\\\embeddings\\\\item_ids.npy'"
+    }
+  },
+  "leakage_violations": 0,
+  "environment": {
+    "python": "3.13.5",
+    "numpy": "2.4.3",
+    "pandas": "3.0.1",
+    "scikit-learn": "1.6.1"
+  }
+}
