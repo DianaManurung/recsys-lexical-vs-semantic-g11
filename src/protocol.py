@@ -11,10 +11,14 @@ OFFICIAL_FILE = "evaluable_users_validation_warm.csv"
 def build_protocol(data_dir="data/", min_rating=MIN_RATING):
     """Kembalikan (train, val, cand_set, seen, relevant).
 
-    relevant = {user_id: set(item relevan di validation)}; kunci dict ini
-    adalah daftar evaluable users."""
+    Evaluable users (aturan resmi paket proyek): user punya minimal 1 item
+    disukai (rating >= min_rating) di training DAN minimal 1 di validation.
+    `seen` tetap berisi SEMUA item training (semua rating) supaya item yang
+    pernah diinteraksikan user tidak direkomendasikan lagi."""
     train, val, cand_set, seen = load_data(data_dir)
     relevant = relevant_items_val(val, cand_set, seen, min_rating)
+    positive_train_users = set(train.loc[train["rating"] >= min_rating, "user_id"])
+    relevant = {u: items for u, items in relevant.items() if u in positive_train_users}
     return train, val, cand_set, seen, relevant
 
 
