@@ -5,8 +5,8 @@
   "train_items": 22753,
   "candidate_items_warm": 22753,
   "candidates_not_seen_in_train": 0,
-  "evaluable_users": 11850,
-  "relevant_pairs": 24707,
+  "evaluable_users": 11659,
+  "relevant_pairs": 24202,
   "min_rating_relevant": 4,
   "top_k": 10
 }
