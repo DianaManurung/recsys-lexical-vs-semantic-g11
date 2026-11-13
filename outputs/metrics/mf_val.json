@@ -1,0 +1,51 @@
+{
+  "model": "Matrix Factorization",
+  "split": "validation",
+  "seed": 42,
+  "k": 10,
+  "metrics": {
+    "Recall@10": 0.004289199178397043,
+    "NDCG@10": 0.0027616599968545248,
+    "HitRate@10": 0.009263230122652028
+  },
+  "n_evaluable_users": 11659,
+  "n_relevant_validation_pairs": 24202,
+  "unique_items_in_top10_across_users": 3620,
+  "catalog_coverage_pct": 15.909989891442887,
+  "protocol": {
+    "train_interactions": 427957,
+    "validation_interactions": 41284,
+    "warm_candidate_items": 22753,
+    "relevance_rule": "validation rating >= 4, item in warm candidates, and not seen by the user in train",
+    "evaluable_user_rule": "at least one positive (rating >= 4) interaction in train and at least one relevant validation item",
+    "official_evaluable_user_list_match": true,
+    "leakage_violations": 0
+  },
+  "parameters": {
+    "n_factors": 32,
+    "n_epochs": 10,
+    "learning_rate": 0.01,
+    "regularization": 0.02,
+    "min_rating": 4,
+    "item_bias_weight": 0.0,
+    "random_state": 42
+  },
+  "runtime_seconds": {
+    "fit": 182.7,
+    "total": 555.8
+  },
+  "provenance": {
+    "notebook": "notebooks/validation_eval.ipynb",
+    "evaluator": "src.evaluate.evaluate_model",
+    "protocol_builder": "src.protocol.build_protocol",
+    "shared_run_log": "outputs/logs/validation_eval_run.json",
+    "shared_metrics_table": "outputs/metrics/validation_results.csv",
+    "run_time_local": "2026-11-13T19:56:14",
+    "environment": {
+      "python": "3.13.5",
+      "numpy": "2.4.3",
+      "pandas": "3.0.1",
+      "scikit-learn": "1.6.1"
+    }
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "run_time_utc": "2026-11-13T12:01:29+00:00",
+  "purpose": "W10 pilot: compare inference-time MF item-bias weights and training epochs",
+  "split": "validation",
+  "k": 10,
+  "seed": 42,
+  "sample_size": 1000,
+  "sample_rule": "sorted evaluable-user IDs, then random.Random(42).sample",
+  "protocol": {
+    "train_interactions": 427957,
+    "validation_interactions": 41284,
+    "train_users": 54483,
+    "train_items": 22753,
+    "candidate_items_warm": 22753,
+    "candidates_not_seen_in_train": 0,
+    "evaluable_users": 11659,
+    "relevant_pairs": 24202,
+    "min_rating_relevant": 4,
+    "top_k": 10
+  },
+  "mf_fit_params": {
+    "n_factors": 32,
+    "n_epochs": 10,
+    "learning_rate": 0.01,
+    "regularization": 0.02,
+    "min_rating": 4,
+    "random_state": 42,
+    "item_bias_weight": 0.0
+  },
+  "mf_scoring_item_bias_weights": [
+    0.0,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "mf_epoch_sensitivity_settings": [
+    5,
+    20
+  ],
+  "interpretation_limit": "Pilot metrics use the same 1,000 validation users for all settings; not a full-population model selection result.",
+  "fit_seconds": 122.783,
+  "fit_seconds_by_epoch_setting": {
+    "10": 122.783,
+    "5": 55.486,
+    "20": 233.906
+  },
+  "evaluation_seconds_by_model": {
+    "Popularity": 0.011,
+    "MF_item_bias_weight_0": 16.678,
+    "MF_item_bias_weight_0.25": 16.006,
+    "MF_item_bias_weight_0.5": 16.56,
+    "MF_item_bias_weight_1": 15.91,
+    "MF_n_epochs_5_item_bias_weight_0": 15.612,
+    "MF_n_epochs_20_item_bias_weight_0": 25.273
+  },
+  "results_csv": "outputs/metrics/mf_bias_sensitivity_pilot.csv",
+  "git_head": "d3ab6f8bd888464a6c1ea1c756af0be0c909455f",
+  "input_sha256": {
+    "interactions_train.csv": "27e2d435d98344769bea0f89f949418a6f269c51dcfefa9b59bbbe5910826313",
+    "interactions_validation.csv": "e1908e3b7834557ab3269c2beaad54d51f9aa034b74ea9d28cbfc438c2b7862e",
+    "candidate_items_warm.csv": "eeddfd1a11d8ecc1e76506f8c0f6c19c533ee4d4cbd80bb6629dd85993864153"
+  },
+  "environment": {
+    "python": "3.11.4",
+    "numpy": "1.26.4",
+    "pandas": "2.2.3"
+  },
+  "shared_full_validation_reference": {
+    "Popularity": {
+      "Model": "Popularity",
+      "n_users": "11659",
+      "Recall@10": "0.01349850373292779",
+      "NDCG@10": "0.009222040875545047",
+      "HitRate@10": "0.03104897504074106",
+      "Item_unik_top10": "18"
+    },
+    "MF": {
+      "Model": "MF",
+      "n_users": "11659",
+      "Recall@10": "0.004289199178397043",
+      "NDCG@10": "0.0027616599968545248",
+      "HitRate@10": "0.009263230122652028",
+      "Item_unik_top10": "3620"
+    },
+    "TF-IDF": {
+      "Model": "TF-IDF",
+      "n_users": "11659",
+      "Recall@10": "0.012611542080558034",
+      "NDCG@10": "0.007342166446425187",
+      "HitRate@10": "0.02109957972381851",
+      "Item_unik_top10": "16093"
+    }
+  },
+  "shared_full_validation_environment": {
+    "python": "3.13.5",
+    "numpy": "2.4.3",
+    "pandas": "3.0.1",
+    "scikit-learn": "1.6.1"
+  },
+  "cross_run_comparison_note": "Use the full-validation result file for official metrics. Absolute pilot metrics are not interchangeable because the pilot samples 1,000 users and uses a different Python/NumPy environment; compare only settings within this pilot."
+}
