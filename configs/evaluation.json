@@ -1,0 +1,10 @@
+{
+  "evaluable_users": "official",
+  "options": {
+    "official": "src.protocol.build_protocol: at least one train rating >= 4 and at least one relevant validation item; equals data/evaluable_users_validation_warm.csv (11,659 users)",
+    "group_rule": "src.data_loader.relevant_items_val only: user present in train and at least one relevant validation item (11,850 users; rule used before W10)"
+  },
+  "relevant_item_rule": "validation rating >= 4 and item in data/candidate_items_warm.csv",
+  "evaluator": "src.evaluate.evaluate_model / evaluate_per_user",
+  "k": 10
+}

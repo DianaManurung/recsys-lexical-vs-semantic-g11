@@ -1,7 +1,37 @@
 {
-  "Recall@10": 0.012722345528611938,
-  "NDCG@10": 0.007451681070760173,
-  "HitRate@10": 0.021772151898734177,
-  "n_eval_users": 11850,
-  "n_eval_users_with_profile": 11659
+  "Recall@10": 0.012611542080558034,
+  "NDCG@10": 0.00735290269657864,
+  "HitRate@10": 0.02109957972381851,
+  "n_eval_users": 11659,
+  "n_eval_users_with_profile": 11659,
+  "evaluable_users_rule": "official",
+  "evaluator": "src.evaluate.evaluate_model",
+  "protocol_builder": "src.shared_eval.build_protocol -> src.protocol.build_protocol",
+  "params": {
+    "stop_words": "english",
+    "min_df": 2,
+    "max_df": 0.8,
+    "sublinear_tf": true,
+    "min_rating": 4
+  },
+  "evaluated_at": "2026-11-13T22:57:02",
+  "seconds": 25.9,
+  "before_w10": {
+    "Recall@10": 0.012722345528611938,
+    "NDCG@10": 0.007451681070760173,
+    "HitRate@10": 0.021772151898734177,
+    "n_eval_users": 11850,
+    "abs_diff": {
+      "Recall@10": 0.00011080344805390434,
+      "NDCG@10": 9.877837418153287e-05,
+      "HitRate@10": 0.0006725721749156685
+    }
+  },
+  "before_w10_file": {
+    "Recall@10": 0.012722345528611938,
+    "NDCG@10": 0.007451681070760173,
+    "HitRate@10": 0.021772151898734177,
+    "n_eval_users": 11850,
+    "n_eval_users_with_profile": 11659
+  }
 }
