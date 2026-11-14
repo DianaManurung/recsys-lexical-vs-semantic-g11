@@ -1,0 +1,2 @@
+﻿run_id,model,model_name,max_seq_length,batch_size,device,evaluable_users,Recall@10,NDCG@10,HitRate@10,evaluation_seconds,notes
+embedding_cbf_20261114-190747_01,MPNet,sentence-transformers/all-mpnet-base-v2,256,8,cpu,11659,0.006908595556471724,0.004075055868890564,0.012265202847585557,109.2,"Evaluation after embeddings were cached; encoding time excluded"

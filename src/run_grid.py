@@ -110,32 +110,101 @@ def build_tfidf(params, train, cand_set):
 
 
 def build_embedding(params, train, cand_set):
-    """Encode with src/semantic_embedding.py, one cache folder per model."""
+    """Build semantic item embeddings and fit the recommender."""
     from src import semantic_embedding as se
     from src.semantic_based import SemanticEmbeddingRecommender
 
+    # Validate the input text field.
     if params["text_field"] != se.TEXT_COL:
-        raise ValueError(f"text_field must be {se.TEXT_COL}")
-    slug = params["model_name"].split("/")[-1]
-    cache = ROOT / "outputs" / "embeddings" / "grid" / f"{slug}_len{params['max_seq_length']}"
-    emb_path, ids_path = cache / "item_embeddings.npy", cache / "item_ids.npy"
-    if not (emb_path.exists() and ids_path.exists()):
-        item_text = se.load_item_text(se.DEFAULT_ITEMS_PATH, cand_set)
-        item_ids, embeddings, stats = se.build_item_embeddings(
-            item_text, model_name=params["model_name"],
-            batch_size=params["batch_size"], device=params["device"],
+        raise ValueError(
+            f"text_field must be {se.TEXT_COL}"
         )
-        # semantic_embedding.py uses the model's default max_seq_length.
-        if stats["max_seq_length"] != params["max_seq_length"]:
+
+    # Validate max_seq_length.
+    max_seq_length = params.get("max_seq_length")
+
+    if (
+        isinstance(max_seq_length, bool)
+        or not isinstance(max_seq_length, int)
+        or max_seq_length <= 0
+    ):
+        raise ValueError(
+            "max_seq_length must be a positive integer"
+        )
+
+    # Create a separate cache for each model and sequence length.
+    slug = params["model_name"].split("/")[-1]
+
+    cache = (
+        ROOT
+        / "outputs"
+        / "embeddings"
+        / "grid"
+        / f"{slug}_len{max_seq_length}"
+    )
+
+    emb_path = cache / "item_embeddings.npy"
+    ids_path = cache / "item_ids.npy"
+
+    # Generate embeddings only if the cache does not exist.
+    if not (emb_path.exists() and ids_path.exists()):
+        item_text = se.load_item_text(
+            se.DEFAULT_ITEMS_PATH,
+            cand_set,
+        )
+
+        item_ids, embeddings, stats = se.build_item_embeddings(
+            item_text,
+            model_name=params["model_name"],
+            batch_size=params["batch_size"],
+            device=params["device"],
+            max_seq_length=max_seq_length,
+        )
+
+        # Verify that the configured sequence length was applied.
+        if stats["max_seq_length"] != max_seq_length:
             raise ValueError(
-                f"{params['model_name']} uses max_seq_length "
-                f"{stats['max_seq_length']}, grid asks for {params['max_seq_length']}"
+                f"Configured max_seq_length is {max_seq_length}, "
+                f"but the encoder used {stats['max_seq_length']}"
             )
-        cache.mkdir(parents=True, exist_ok=True)
-        np.save(emb_path, embeddings, allow_pickle=False)
-        np.save(ids_path, item_ids, allow_pickle=False)
-    return SemanticEmbeddingRecommender(min_rating=params["min_rating"]).fit(
-        train, cand_set, embeddings_path=emb_path, item_ids_path=ids_path,
+
+        # Save embeddings and corresponding item IDs.
+        cache.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        np.save(
+            emb_path,
+            embeddings,
+            allow_pickle=False,
+        )
+
+        np.save(
+            ids_path,
+            item_ids,
+            allow_pickle=False,
+        )
+
+        print(f"Embedding cache created: {cache}")
+        print("Embedding dimension:", stats["embedding_dimension"])
+        print("Maximum sequence length:", stats["max_seq_length"])
+        print("Truncated texts:", stats["truncated_texts"])
+        print("Truncated tokens:", stats["truncated_tokens"])
+
+    else:
+        print(f"Using existing embedding cache: {cache}")
+
+    # Fit the semantic recommender.
+    recommender = SemanticEmbeddingRecommender(
+        min_rating=params["min_rating"]
+    )
+
+    return recommender.fit(
+        train,
+        cand_set,
+        embeddings_path=emb_path,
+        item_ids_path=ids_path,
     )
 
 
