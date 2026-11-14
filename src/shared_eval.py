@@ -1,86 +1,66 @@
-"""Shared evaluation protocol used by the CP3 experiments.
+"""Evaluation entry point for Tiffani's scripts and notebooks.
 
-Temporary wrapper until Diana's protocol and evaluation module is merged
-(branch feature/cp3-protocol-evaluate). The function names, arguments and
-return values follow ``src.protocol.build_protocol`` and
-``src.evaluate.evaluate_model`` / ``evaluate_per_user`` on that branch. The
-computation is the one used by the TF-IDF notebook (``evaluate_at_k`` and
-``hit_rate_at_k``), so the stored TF-IDF metrics are reproduced exactly.
+Metrics come from Diana's ``src/evaluate.py``. The evaluable-user list is
+chosen with one setting, ``evaluable_users`` in ``configs/evaluation.json``:
 
-After the merge, replace the body of this module with:
+- ``"official"``: ``src.protocol.build_protocol`` (11,659 users, identical to
+  ``data/evaluable_users_validation_warm.csv``).
+- ``"group_rule"``: ``load_data`` + ``relevant_items_val`` without the positive
+  train item filter (11,850 users, the rule used before W10).
 
-    from src.protocol import build_protocol
-    from src.evaluate import evaluate_model, evaluate_per_user
+Only train and validation are read.
 """
 
-import numpy as np
-import pandas as pd
+import json
+from pathlib import Path
 
+from src import protocol
 from src.data_loader import load_data, relevant_items_val
+from src.evaluate import evaluate_model, evaluate_per_user  # noqa: F401
 
-MIN_RATING = 4
-TOP_K = 10
+ROOT = Path(__file__).resolve().parents[1]
+CONFIG_PATH = ROOT / "configs" / "evaluation.json"
+RULES = ("official", "group_rule")
+MIN_RATING = protocol.MIN_RATING
+TOP_K = protocol.TOP_K
 
 
-def build_protocol(data_dir="data/", min_rating=MIN_RATING):
-    """Return ``(train, val, cand_set, seen, relevant)``.
+def evaluable_users_rule(path=CONFIG_PATH):
+    """Rule name set in ``configs/evaluation.json``."""
+    rule = json.loads(Path(path).read_text(encoding="utf-8"))["evaluable_users"]
+    if rule not in RULES:
+        raise ValueError(f"evaluable_users must be one of {RULES}, got {rule!r}")
+    return rule
 
-    ``relevant`` maps each evaluable user to the set of validation items rated
-    ``>= min_rating`` that are warm candidates; its keys are the evaluable
-    users. Only train and validation are read.
+
+def build_protocol(data_dir="data/", min_rating=MIN_RATING, rule=None):
+    """Return ``(train, val, cand_set, seen, relevant)`` for the chosen rule.
+
+    ``rule`` overrides the config file when given.
     """
+    rule = rule or evaluable_users_rule()
+    if rule == "official":
+        return protocol.build_protocol(data_dir, min_rating)
     train, val, cand_set, seen = load_data(data_dir)
     relevant = relevant_items_val(val, cand_set, seen, min_rating)
     return train, val, cand_set, seen, relevant
 
 
-def _user_metrics(recs, relevant_items, k):
-    """Recall, NDCG and hit for one user, as in the TF-IDF notebook."""
-    hits = [item in relevant_items for item in recs[:k]]
-    recall = sum(hits) / len(relevant_items)
-    dcg = sum(hit / np.log2(rank + 2) for rank, hit in enumerate(hits))
-    ideal_hits = min(len(relevant_items), k)
-    idcg = sum(1 / np.log2(rank + 2) for rank in range(ideal_hits))
-    ndcg = dcg / idcg if idcg else 0.0
-    return recall, ndcg, float(any(hits))
-
-
-def evaluate_per_user(model, relevant, seen, k=TOP_K):
-    """Per-user metrics as a DataFrame with columns
-    ``user_id, n_relevant, recall, ndcg, hit``."""
-    rows = []
-    for user_id, relevant_items in relevant.items():
-        recs = model.recommend(user_id, seen, k=k)
-        recall, ndcg, hit = _user_metrics(recs, relevant_items, k)
-        rows.append({
-            "user_id": user_id,
-            "n_relevant": len(relevant_items),
-            "recall": recall,
-            "ndcg": ndcg,
-            "hit": hit,
-        })
-    return pd.DataFrame(rows)
-
-
 def summarize(per_user, k=TOP_K):
-    """Average a per-user DataFrame into the ``evaluate_model`` format."""
-    if per_user.empty:
+    """Average an ``evaluate_per_user`` DataFrame.
+
+    Values are summed in user order and divided by n, as in
+    ``src.evaluate.evaluate_model``, so the overall row matches it exactly.
+    """
+    n = len(per_user)
+    if n == 0:
         raise ValueError("No evaluable users.")
     return {
-        f"Recall@{k}": float(np.mean(per_user["recall"].to_numpy())),
-        f"NDCG@{k}": float(np.mean(per_user["ndcg"].to_numpy())),
-        f"HitRate@{k}": float(np.mean(per_user["hit"].to_numpy())),
-        "n_users": int(len(per_user)),
+        f"Recall@{k}": sum(per_user["recall"].tolist()) / n,
+        f"NDCG@{k}": sum(per_user["ndcg"].tolist()) / n,
+        f"HitRate@{k}": sum(per_user["hit"].tolist()) / n,
+        "n_users": int(n),
     }
-
-
-def evaluate_model(model, relevant, seen, k=TOP_K):
-    """Mean Recall@k, NDCG@k and HitRate@k over all evaluable users.
-
-    ``model`` needs a ``recommend(user_id, seen, k)`` method. Returns
-    ``{"Recall@k", "NDCG@k", "HitRate@k", "n_users"}``.
-    """
-    return summarize(evaluate_per_user(model, relevant, seen, k), k)
 
 
 def check_top_k(recs_by_user, cand_set, seen, k=TOP_K):

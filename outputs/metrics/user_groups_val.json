@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-11-07T10:46:46",
+  "created_at": "2026-11-14T09:32:13",
   "config": "configs/user_groups.json",
   "group_bounds": [
     {
@@ -18,8 +18,40 @@
       "max": null
     }
   ],
-  "evaluation": "src/shared_eval.py (same protocol as the main evaluation)",
-  "n_evaluable_users": 11850,
+  "evaluation": "src.evaluate.evaluate_per_user; group means summed and divided by n as in src.evaluate.evaluate_model",
+  "evaluable_users_rule": "official",
+  "n_evaluable_users": 11659,
+  "models": {
+    "Popularity": {
+      "min_rating": 4
+    },
+    "MF": {
+      "n_factors": 32,
+      "n_epochs": 10,
+      "learning_rate": 0.01,
+      "regularization": 0.02,
+      "min_rating": 4,
+      "random_state": 42,
+      "item_bias_weight": 0.0
+    },
+    "TF-IDF": {
+      "stop_words": "english",
+      "min_df": 2,
+      "max_df": 0.8,
+      "sublinear_tf": true,
+      "min_rating": 4
+    },
+    "Embedding": {
+      "min_rating": 4,
+      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+    }
+  },
+  "unique_items_in_top10": {
+    "Popularity": 18,
+    "MF": 3620,
+    "TF-IDF": 16093,
+    "Embedding": 14154
+  },
   "n_train_users_per_group": {
     "rendah": 22117,
     "sedang": 18197,
@@ -27,12 +59,12 @@
   },
   "evaluable_users_per_group": {
     "rendah": {
-      "n_evaluable_users": 6295,
-      "n_without_positive_train_item": 190
+      "n_evaluable_users": 6105,
+      "n_without_positive_train_item": 0
     },
     "sedang": {
-      "n_evaluable_users": 2365,
-      "n_without_positive_train_item": 1
+      "n_evaluable_users": 2364,
+      "n_without_positive_train_item": 0
     },
     "tinggi": {
       "n_evaluable_users": 3190,
@@ -42,51 +74,115 @@
   "metrics": [
     {
       "group": "rendah",
+      "model": "Popularity",
+      "Recall@10": 0.01554726318095302,
+      "NDCG@10": 0.010707169272296126,
+      "HitRate@10": 0.036036036036036036,
+      "n_users": 6105
+    },
+    {
+      "group": "sedang",
+      "model": "Popularity",
+      "Recall@10": 0.013287104181774227,
+      "NDCG@10": 0.00836620386430967,
+      "HitRate@10": 0.025803722504230117,
+      "n_users": 2364
+    },
+    {
+      "group": "tinggi",
+      "model": "Popularity",
+      "Recall@10": 0.009734263014662287,
+      "NDCG@10": 0.007014043957800578,
+      "HitRate@10": 0.025391849529780564,
+      "n_users": 3190
+    },
+    {
+      "group": "all",
+      "model": "Popularity",
+      "Recall@10": 0.01349850373292779,
+      "NDCG@10": 0.009222040875545047,
+      "HitRate@10": 0.03104897504074106,
+      "n_users": 11659
+    },
+    {
+      "group": "rendah",
+      "model": "MF",
+      "Recall@10": 0.004865325774416682,
+      "NDCG@10": 0.0029911511122882794,
+      "HitRate@10": 0.010319410319410319,
+      "n_users": 6105
+    },
+    {
+      "group": "sedang",
+      "model": "MF",
+      "Recall@10": 0.004805884564767813,
+      "NDCG@10": 0.003122425678469431,
+      "HitRate@10": 0.007614213197969543,
+      "n_users": 2364
+    },
+    {
+      "group": "tinggi",
+      "model": "MF",
+      "Recall@10": 0.0028037141871492637,
+      "NDCG@10": 0.0020551103632931687,
+      "HitRate@10": 0.008463949843260187,
+      "n_users": 3190
+    },
+    {
+      "group": "all",
+      "model": "MF",
+      "Recall@10": 0.004289199178397043,
+      "NDCG@10": 0.0027616599968545248,
+      "HitRate@10": 0.009263230122652028,
+      "n_users": 11659
+    },
+    {
+      "group": "rendah",
       "model": "TF-IDF",
-      "Recall@10": 0.013316576299569335,
-      "NDCG@10": 0.007916053452102733,
-      "HitRate@10": 0.022716441620333597,
-      "n_users": 6295
+      "Recall@10": 0.013121379591967826,
+      "NDCG@10": 0.007740643461406892,
+      "HitRate@10": 0.021457821457821456,
+      "n_users": 6105
     },
     {
       "group": "sedang",
       "model": "TF-IDF",
-      "Recall@10": 0.015121983959193263,
-      "NDCG@10": 0.009244606859619586,
-      "HitRate@10": 0.022832980972515855,
-      "n_users": 2365
+      "Recall@10": 0.015128380737517794,
+      "NDCG@10": 0.009248517437817395,
+      "HitRate@10": 0.02284263959390863,
+      "n_users": 2364
     },
     {
       "group": "tinggi",
       "model": "TF-IDF",
-      "Recall@10": 0.009770675437232111,
-      "NDCG@10": 0.005206071781981512,
+      "Recall@10": 0.00977067543723211,
+      "NDCG@10": 0.005206071781981515,
       "HitRate@10": 0.019122257053291535,
       "n_users": 3190
     },
     {
       "group": "all",
       "model": "TF-IDF",
-      "Recall@10": 0.012722345528611938,
-      "NDCG@10": 0.007451681070760173,
-      "HitRate@10": 0.021772151898734177,
-      "n_users": 11850
+      "Recall@10": 0.012611542080558034,
+      "NDCG@10": 0.00735290269657864,
+      "HitRate@10": 0.02109957972381851,
+      "n_users": 11659
     },
     {
       "group": "rendah",
       "model": "Embedding",
-      "Recall@10": 0.01101034271267416,
-      "NDCG@10": 0.006849692467655922,
-      "HitRate@10": 0.018903891977760125,
-      "n_users": 6295
+      "Recall@10": 0.010743371331606629,
+      "NDCG@10": 0.006641095157214805,
+      "HitRate@10": 0.017526617526617525,
+      "n_users": 6105
     },
     {
       "group": "sedang",
       "model": "Embedding",
-      "Recall@10": 0.0075817980469143256,
-      "NDCG@10": 0.003900120008116362,
-      "HitRate@10": 0.01226215644820296,
-      "n_users": 2365
+      "Recall@10": 0.007585005237289501,
+      "NDCG@10": 0.0039017698050741114,
+      "HitRate@10": 0.012267343485617596,
+      "n_users": 2364
     },
     {
       "group": "tinggi",
@@ -99,10 +195,10 @@
     {
       "group": "all",
       "model": "Embedding",
-      "Recall@10": 0.008860041574486846,
-      "NDCG@10": 0.005361085730983536,
-      "HitRate@10": 0.01569620253164557,
-      "n_users": 11850
+      "Recall@10": 0.00868596511371848,
+      "NDCG@10": 0.0052280588183426764,
+      "HitRate@10": 0.014924092975383824,
+      "n_users": 11659
     }
   ]
 }

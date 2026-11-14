@@ -1,30 +1,30 @@
 {
-  "checked_at": "2026-11-07T10:23:31",
+  "checked_at": "2026-11-13T23:00:35",
   "stored_file": "outputs/metrics/tfidf_cbf_val.json",
   "n_users": {
-    "stored": 11850,
-    "rerun": 11850
+    "stored": 11659,
+    "rerun": 11659
   },
   "vocab_size": 26550,
   "metrics": {
     "Recall@10": {
-      "stored": 0.012722345528611938,
-      "rerun": 0.012722345528611938,
+      "stored": 0.012611542080558034,
+      "rerun": 0.012611542080558034,
       "abs_diff": 0.0
     },
     "NDCG@10": {
-      "stored": 0.007451681070760173,
-      "rerun": 0.007451681070760173,
+      "stored": 0.00735290269657864,
+      "rerun": 0.00735290269657864,
       "abs_diff": 0.0
     },
     "HitRate@10": {
-      "stored": 0.021772151898734177,
-      "rerun": 0.021772151898734177,
+      "stored": 0.02109957972381851,
+      "rerun": 0.02109957972381851,
       "abs_diff": 0.0
     }
   },
   "identical": true,
-  "seconds": 32.3,
+  "seconds": 30.0,
   "environment": {
     "python": "3.11.4",
     "scikit-learn": "1.3.0"

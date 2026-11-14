@@ -1,8 +1,35 @@
 {
-  "Recall@10": 0.008860041574486844,
-  "NDCG@10": 0.005361085730983537,
-  "HitRate@10": 0.01569620253164557,
-  "n_eval_users": 11850,
+  "Recall@10": 0.00868596511371848,
+  "NDCG@10": 0.0052280588183426764,
+  "HitRate@10": 0.014924092975383824,
+  "n_eval_users": 11659,
   "n_eval_users_with_profile": 11659,
-  "sanity_check_users": 200
+  "evaluable_users_rule": "official",
+  "evaluator": "src.evaluate.evaluate_model",
+  "protocol_builder": "src.shared_eval.build_protocol -> src.protocol.build_protocol",
+  "params": {
+    "min_rating": 4,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  },
+  "evaluated_at": "2026-11-13T22:57:43",
+  "seconds": 41.1,
+  "before_w10": {
+    "Recall@10": 0.008860041574486844,
+    "NDCG@10": 0.005361085730983537,
+    "HitRate@10": 0.01569620253164557,
+    "n_eval_users": 11850,
+    "abs_diff": {
+      "Recall@10": 0.00017407646076836487,
+      "NDCG@10": 0.00013302691264086095,
+      "HitRate@10": 0.0007721095562617467
+    }
+  },
+  "before_w10_file": {
+    "Recall@10": 0.008860041574486844,
+    "NDCG@10": 0.005361085730983537,
+    "HitRate@10": 0.01569620253164557,
+    "n_eval_users": 11850,
+    "n_eval_users_with_profile": 11659,
+    "sanity_check_users": 200
+  }
 }
