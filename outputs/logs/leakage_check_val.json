@@ -1,0 +1,66 @@
+{
+  "checked_at": "2026-11-14T09:39:03",
+  "evaluable_users_rule": "official",
+  "n_evaluable_users": 11659,
+  "static_checks": {
+    "temporal_split": true,
+    "no_pair_overlap": true,
+    "relevant_in_candidates": true,
+    "test_unused": true
+  },
+  "check_features": true,
+  "feature_columns": [
+    "user_id",
+    "item_id",
+    "rating",
+    "timestamp",
+    "item_id",
+    "content_text_basic"
+  ],
+  "check_same_candidates": true,
+  "candidate_universe_sizes": {
+    "Popularity (fit input)": 22753,
+    "MF": 22753,
+    "TF-IDF": 22753,
+    "Embedding": 22753
+  },
+  "per_model": {
+    "Popularity": {
+      "users_checked": 11659,
+      "check_recommendations": true,
+      "message": "",
+      "wrong_length": 0,
+      "duplicate_items": 0,
+      "seen_items": 0,
+      "non_candidate_items": 0
+    },
+    "MF": {
+      "users_checked": 11659,
+      "check_recommendations": true,
+      "message": "",
+      "wrong_length": 0,
+      "duplicate_items": 0,
+      "seen_items": 0,
+      "non_candidate_items": 0
+    },
+    "TF-IDF": {
+      "users_checked": 11659,
+      "check_recommendations": true,
+      "message": "",
+      "wrong_length": 0,
+      "duplicate_items": 0,
+      "seen_items": 0,
+      "non_candidate_items": 0
+    },
+    "Embedding": {
+      "users_checked": 11659,
+      "check_recommendations": true,
+      "message": "",
+      "wrong_length": 0,
+      "duplicate_items": 0,
+      "seen_items": 0,
+      "non_candidate_items": 0
+    }
+  },
+  "total_violations": 0
+}
