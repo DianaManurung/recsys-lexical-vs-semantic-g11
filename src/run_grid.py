@@ -208,7 +208,71 @@ def build_embedding(params, train, cand_set):
     )
 
 
-BUILDERS = {"tfidf_cbf": build_tfidf, "embedding_cbf": build_embedding}
+def build_mf(params, train, cand_set):
+    """E2: biased MF (configs/mf_search.json). Seed = ``random_state``,
+    default 42 like the search file seed."""
+    from src.matrix_factorization import MatrixFactorizationRecommender
+
+    return MatrixFactorizationRecommender(
+        n_factors=params["n_factors"],
+        n_epochs=params["n_epochs"],
+        learning_rate=params["learning_rate"],
+        regularization=params["regularization"],
+        min_rating=params["min_rating"],
+        item_bias_weight=params["item_bias_weight"],
+        random_state=params.get("random_state", 42),
+    ).fit(train, cand_set)
+
+
+def build_hybrid_tfidf(params, train, cand_set):
+    """E5: TF-IDF content + popularity (configs/hybrid_search.json). TF-IDF
+    uses the fixed values in the search file; max_features and ngram_range
+    keep the E3 baseline defaults (None, (1, 1))."""
+    from src.hybrid import ContentPopularityHybrid
+
+    content = build_tfidf({
+        "text_field": params["text_field"],
+        "stop_words": params["stop_words"],
+        "min_df": params["min_df"],
+        "max_df": params["max_df"],
+        "sublinear_tf": params["sublinear_tf"],
+        "min_rating": params["min_rating"],
+        "max_features": params.get("max_features"),
+        "ngram_range": params.get("ngram_range", [1, 1]),
+    }, train, cand_set)
+    return ContentPopularityHybrid(
+        content, alpha=params["alpha"], min_rating=params["min_rating"]
+    ).fit(train)
+
+
+def build_hybrid_embedding(params, train, cand_set):
+    """E6: semantic embedding content + popularity
+    (configs/hybrid_embedding_search.json). Uses the E4 baseline MiniLM cache
+    in outputs/embeddings/ (outputs/configs/semantic_cbf.json)."""
+    from src.hybrid import ContentPopularityHybrid
+    from src.semantic_based import (DEFAULT_EMBEDDINGS_PATH, DEFAULT_ITEM_IDS_PATH,
+                                    SemanticEmbeddingRecommender)
+
+    if not (DEFAULT_EMBEDDINGS_PATH.exists() and DEFAULT_ITEM_IDS_PATH.exists()):
+        raise FileNotFoundError(
+            "Baseline embedding cache missing; run src/embedding_cache.py first")
+    content = SemanticEmbeddingRecommender(min_rating=params["min_rating"]).fit(
+        train, cand_set,
+        embeddings_path=DEFAULT_EMBEDDINGS_PATH,
+        item_ids_path=DEFAULT_ITEM_IDS_PATH,
+    )
+    return ContentPopularityHybrid(
+        content, alpha=params["alpha"], min_rating=params["min_rating"]
+    ).fit(train)
+
+
+BUILDERS = {
+    "tfidf_cbf": build_tfidf,
+    "embedding_cbf": build_embedding,
+    "matrix_factorization": build_mf,
+    "hybrid_tfidf": build_hybrid_tfidf,
+    "hybrid_embedding": build_hybrid_embedding,
+}
 
 
 def read_log(path=LOG_PATH):

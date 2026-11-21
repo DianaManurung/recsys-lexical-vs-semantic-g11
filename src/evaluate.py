@@ -66,6 +66,48 @@ def evaluate_per_user(model, relevant, seen, k=10):
     return pd.DataFrame(rows)
 
 
+def precision_at_k(recs, relevant, k=10):
+    """Jumlah item relevan di top-K dibagi K (W11)."""
+    if k <= 0:
+        return 0.0
+    return len(hits_and_positions(recs, relevant, k)) / k
+
+
+def evaluate_per_user_at_ks(model, relevant, seen, ks=(10, 20, 50)):
+    """Metrik per user untuk beberapa K sekaligus (W11).
+
+    Model dipanggil sekali per user dengan K terbesar, lalu daftar
+    dipotong untuk tiap K. Kolom: ``recall@k``, ``precision@k``, ``ndcg@k``,
+    ``hit@k`` untuk setiap k di ``ks``."""
+    import pandas as pd
+    ks = sorted(ks)
+    rows = []
+    for user, rel in relevant.items():
+        recs = model.recommend(user, seen, ks[-1])
+        row = {"user_id": user, "n_relevant": len(rel)}
+        for k in ks:
+            row[f"recall@{k}"] = recall_at_k(recs, rel, k)
+            row[f"precision@{k}"] = precision_at_k(recs, rel, k)
+            row[f"ndcg@{k}"] = ndcg_at_k(recs, rel, k)
+            row[f"hit@{k}"] = hitrate_at_k(recs, rel, k)
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
+def summarize_at_ks(per_user, ks=(10, 20, 50)):
+    """Rata-rata kolom dari ``evaluate_per_user_at_ks`` (jumlah berurutan / n)."""
+    n = len(per_user)
+    if n == 0:
+        raise ValueError("Tidak ada evaluable users.")
+    out = {}
+    for k in sorted(ks):
+        for col, name in (("recall", "Recall"), ("precision", "Precision"),
+                          ("ndcg", "NDCG"), ("hit", "HitRate")):
+            out[f"{name}@{k}"] = sum(per_user[f"{col}@{k}"].tolist()) / n
+    out["n_users"] = int(n)
+    return out
+
+
 # Contoh kecil yang bisa dihitung manual: (nama, rekomendasi, relevan, k,
 # Recall, NDCG, HitRate yang diharapkan)
 MANUAL_CASES = [
@@ -91,6 +133,14 @@ def sanity_check_metrics(verbose=True):
             assert abs(g - e) < 1e-9, f"{name}: dapat {got}, seharusnya {exp}"
         if verbose:
             print(f"OK  {name}: Recall={got[0]:.4f} NDCG={got[1]:.4f} HitRate={got[2]:.0f}")
+    # Precision@K (W11): hits / K
+    for recs, rel, k, exp in ((["a", "b", "c"], {"b", "x"}, 3, 1 / 3),
+                              (list("abcdefghij"), {"a", "j"}, 10, 0.2),
+                              (["a", "b"], {"x"}, 2, 0.0)):
+        got = precision_at_k(recs, rel, k)
+        assert abs(got - exp) < 1e-9, f"Precision: dapat {got}, seharusnya {exp}"
+        if verbose:
+            print(f"OK  Precision@{k} {recs[:3]}.. rel={sorted(rel)}: {got:.4f}")
     if verbose:
         print("Semua contoh manual cocok.")
     return True
