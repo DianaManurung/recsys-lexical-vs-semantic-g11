@@ -1,6 +1,7 @@
 
 """Semantic embedding baseline using Sentence Transformers."""
 
+import contextlib
 from pathlib import Path
 
 import numpy as np
@@ -45,8 +46,17 @@ def load_item_text(
 
     item_text = {}
 
-    # Limit Pandas parallel CSV reading to reduce memory pressure.
-    with pd.option_context("mode.max_threads", 1):
+    # Limit Pandas parallel CSV reading to reduce memory pressure. The option
+    # does not exist in every pandas version (e.g. 1.5.x in the g11-cp3
+    # environment); reading is unchanged without it.
+    try:
+        threads_ctx = pd.option_context("mode.max_threads", 1)
+        threads_ctx.__enter__()
+        threads_ctx.__exit__(None, None, None)
+    except (AttributeError, KeyError):  # pandas OptionError subclasses both
+        threads_ctx = contextlib.nullcontext()
+
+    with threads_ctx:
 
         reader = pd.read_csv(
             path,
