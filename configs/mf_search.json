@@ -6,6 +6,7 @@
   "fixed": {
     "min_rating": 4,
     "item_bias_weight": 0.0,
+    "random_state": 42,
     "k": 10
   },
   "grid": {
